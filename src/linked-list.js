@@ -1,27 +1,94 @@
 const Node = require('./node');
 
 class LinkedList {
-    constructor() {}
+    constructor() {
+      this.length = 0;
+      this._head = null;
+      this._tail = null;
+    }
 
-    append(data) {}
+    append(data) {
+      var node = new Node(data);
+      if(this._head == null) {
+        this._head = node;
+      }
+      if (this._tail != null) {
+        this._tail.next = node;
+        node.prev = this._tail;
+      }
+      this._tail = node;
+      this.length++;
+      return this;
+    }
 
-    head() {}
+    head() {
+      return this._head ? this._head.data : null;
+    }
 
-    tail() {}
+    tail() {
+      return this._tail ? this._tail.data : null;
+    }
 
-    at(index) {}
+    at(index) {
+      var node = this._head;
+      for (var i = 0; i < index; i++) {
+        node = node.next;
+      }
+      return node.data;
+    }
 
-    insertAt(index, data) {}
+    insertAt(index, data) {
+      var node = new Node(data),
+          prevNode = this._head,
+          nextNode;
+      for (var i = 0; i < index - 1; i++) {
+        prevNode = prevNode.next;
+      }
+      nextNode = prevNode.next;
 
-    isEmpty() {}
+      node.prev = prevNode;
+      node.next = nextNode; 
+      prevNode.next = node;
+      nextNode.prev = node;
 
-    clear() {}
+      this.length++;
+    }
 
-    deleteAt(index) {}
+    isEmpty() {
+      return this.length == 0 ? true : false;
+    }
 
-    reverse() {}
+    clear() {
+      this._head = null;
+      this._tail = null;
+      this.length = 0;
+    }
 
-    indexOf(data) {}
+    deleteAt(index) {
+      var node = this._head;
+      for (var i = 0; i < index; i++) {
+        node = node.next;
+      }
+
+      var prevNode = node.prev,
+          nextNode = node.next;
+      prevNode.next = nextNode;
+      nextNode.prev = prevNode;
+    }
+
+    reverse() {
+
+    }
+
+    indexOf(data) {
+      var node = this._head;
+      if (node.data == data) return 0;
+      for (var i = 1; i < this.length; i++) {
+        node = node.next;
+        if (node.data == data) return i;
+      }
+      return -1;
+    }
 }
 
 module.exports = LinkedList;
